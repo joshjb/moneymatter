@@ -11,6 +11,8 @@ on:
     tags:
       - 'v*'
 
+permissions: write-all
+
 jobs:
   build-mac-arm64:
     name: Build macOS Apple Silicon (arm64)
