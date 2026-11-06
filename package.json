@@ -6,11 +6,15 @@
   "author": "letehaha",
   "workspaces": [
     "packages/backend",
+    "packages/desktop",
     "packages/frontend",
     "packages/landing",
     "packages/shared"
   ],
   "scripts": {
+    "desktop:dev": "npm -w @bt/desktop run dev",
+    "desktop:build": "npm -w @bt/desktop run build",
+    "desktop:build:mac": "npm -w @bt/desktop run build:mac",
     "lint": "npm -w budget-tracker-be run lint && npm -w budget-tracker-fe run lint",
     "typecheck": "npm -w budget-tracker-be run typecheck && npm -w budget-tracker-fe run typecheck",
     "landing:dev": "npm -w packages/landing run dev",
