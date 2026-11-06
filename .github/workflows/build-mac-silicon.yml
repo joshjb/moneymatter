@@ -16,7 +16,9 @@ permissions: write-all
 jobs:
   build-mac-arm64:
     name: Build macOS Apple Silicon (arm64)
-    runs-on: macos-14 # Native Apple Silicon M-series runner on GitHub Actions
+    runs-on: macos-latest # Standard Apple Silicon M-series runner on GitHub Actions
+    env:
+      NODE_OPTIONS: '--max-old-space-size=4096'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -50,7 +52,7 @@ jobs:
 
       - name: Build Moneymatter Frontend & Desktop Assets
         run: |
-          npm -w packages/frontend run build
+          npx -w packages/frontend vite build
           node packages/desktop/scripts/build-frontend.mjs
 
       - name: Build Tauri Desktop App for Apple Silicon (aarch64-apple-darwin)

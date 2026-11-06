@@ -1,7 +1,7 @@
+import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { execSync } from 'child_process';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,12 +26,18 @@ if (fs.existsSync(path.resolve(frontendDist, 'index.html'))) {
 } else {
   console.log('[build-frontend] Building frontend assets from packages/frontend...');
   try {
-    execSync('npm run build', { cwd: frontendRoot, stdio: 'inherit' });
+    execSync('npx vite build', {
+      cwd: frontendRoot,
+      stdio: 'inherit',
+      env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=4096' },
+    });
     if (fs.existsSync(path.resolve(frontendDist, 'index.html'))) {
       useFrontendBuild = true;
     }
   } catch (err) {
-    console.warn('[build-frontend] Note: Frontend npm build skipped or encountered error. Using desktop standalone shell mode.');
+    console.warn(
+      '[build-frontend] Note: Frontend vite build skipped or encountered error. Using desktop standalone shell mode.',
+    );
   }
 }
 
@@ -52,7 +58,7 @@ if (useFrontendBuild) {
 } else {
   // Provide standalone desktop launcher HTML shell
   console.log('[build-frontend] Generating desktop standalone shell in dist/index.html...');
-  
+
   // Copy icons and assets
   const logoSrc = path.resolve(desktopRoot, '../landing/public/img/logo.svg');
   if (fs.existsSync(logoSrc)) {
